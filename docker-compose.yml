@@ -1,0 +1,19 @@
+version: "3"
+
+services: 
+
+  db:
+    image: mongo:4.2
+    container_name: DB-SERVER
+    restart: always
+    ports:
+      - ${DB_PORT}:27017
+    
+
+  app:
+    build: .
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/app
