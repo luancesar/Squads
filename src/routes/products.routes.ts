@@ -84,9 +84,9 @@ productsRouter.put('/',async (req, res) => {
         const productRepository = getCustomRepository(ProductRepository);
         const productService = new CreateProductService(productRepository);
         
-        const product = await productService.update(id, {name, description,value});
+        await productService.update(id, {name, description,value});
  
-        return res.json(product);
+        return res.json("O produto foi atualizado");
         
     }catch (err){
         return res.status(400).json({error: err.message});

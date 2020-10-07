@@ -1,6 +1,7 @@
 import Product from '../models/schemas/Product'
 import ProductRepository from '../repositories/ProductRepository';
 import { getCustomRepository } from 'typeorm';
+import { json } from 'express';
 
 
 interface Request{
@@ -20,12 +21,20 @@ class CreateProductService {
     public async create({name, description, value}: Request): Promise<Product>{
         const productRepository = getCustomRepository(ProductRepository)
 
-       
-        const product = productRepository.create({name, description, value});
+        const findProduct = await productRepository.findByName(name);
 
-        await productRepository.save(product);
+        if(findProduct)
+           throw Error("Ja existe um produto com esse nome") ;
+        
 
-        return product
+        if(!value)
+            throw Error("É necessário inserir um valor") ;
+
+
+        const newProduct = productRepository.create({name, description, value});
+        await productRepository.save(newProduct);
+        
+        return newProduct
     }
 
     public async list(): Promise<Product[]>{
@@ -37,12 +46,15 @@ class CreateProductService {
         return products;
     }
 
-    public async filterList(id: string): Promise<Product | null>{
+    public async filterList(id: string): Promise<Product>{
         const productRepository = getCustomRepository(ProductRepository)
 
         const product = await productRepository.findOne(id);
 
-        return product || null
+        if(!product)
+            throw Error("Produto não encontrado")
+
+        return product
     }
 
     public async delete(id: string){
@@ -56,15 +68,24 @@ class CreateProductService {
             throw Error("Produto não encontrado")
     }
 
-    public async update(id:string, {name, description, value}: Request): Promise<Product | null>{
+    public async update(id:string, {name, description, value}: Request){
         const productRepository = getCustomRepository(ProductRepository)
 
-       
-        await productRepository.update(id, {name, description, value})
+        const findProduct = await productRepository.findByName(name);
+
+        if(findProduct)
+           throw Error("Ja existe um produto com esse nome") ;
         
+        if(!value)
+            throw Error("É necessário inserir um valor") ;
+
         const product = await this.filterList(id);
 
-        return product
+        if(!product)
+            throw Error("Produto não encontrado")
+
+        
+        await productRepository.update(id, {name, description, value})
     }
 
 
