@@ -1,0 +1,10 @@
+{
+    "type": "mongodb",
+    "host": "DB-SERVER",
+    "port": 27017,
+    "database": "nodeauth",
+    "useUnifiedTopology":true,
+    "entities": [
+        "./src/models/schemas/*.ts"
+    ]
+}

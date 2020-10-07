@@ -8,12 +8,29 @@ services:
     restart: always
     ports:
       - ${DB_PORT}:27017
+    environment: 
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      # MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      # MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
     
 
-  app:
-    build: .
-    command: npm start
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/usr/app
+  api:
+    image: node:latest
+    container_name: BACKEND-SERVER
+    restart: always
+    ports: 
+      - 3001:3001
+    env_file: 
+      - .env
+    depends_on: 
+      - db
+    volumes: 
+      - .:/usr/src/squads
+    working_dir: /usr/src/squads
+    command: yarn build
+    logging: 
+      driver: "json-file"
+      options: 
+        max-size: "10m"
+        max-file: "5"
+    
