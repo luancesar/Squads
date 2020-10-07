@@ -6,14 +6,6 @@ import {EntityRepository, Repository} from 'typeorm';
 class ProductRepository extends Repository<Product>{
  
 
-  public async filterList(name: string): Promise<Product[]>{
-
-    const products =  await this.find({where : {name}});
-
-    
-      return products
-  }
-
 }
 
 export default ProductRepository;
