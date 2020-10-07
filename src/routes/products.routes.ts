@@ -16,14 +16,14 @@ productsRouter.post('/',async (req, res) => {
         const {name, description, value} = req.body;
 
         const productRepository = getCustomRepository(ProductRepository);
-        const productService = new CreateProductService(productRepository)
+        const productService = new CreateProductService(productRepository);
         
-        const product = await productService.create({name, description,value})
-
+        const product = await productService.create({name, description,value});
+ 
         return res.json(product);
         
     }catch (err){
-        return res.status(400).json({error: err.message})
+        return res.status(400).json({error: err.message});
     }
 });
 
@@ -31,26 +31,25 @@ productsRouter.post('/',async (req, res) => {
 productsRouter.get('/', async (req, res) => {
     try{
         const productRepository = getCustomRepository(ProductRepository);
-        const productService = new CreateProductService(productRepository)
+        const productService = new CreateProductService(productRepository);
         const products = await productService.list();
         
-        return res.json(products)
+        return res.json(products);
 
     } catch (err){
-        return res.status(400).json({error: err.message})
+        return res.status(400).json({error: err.message});
     }
 });
 
 
 //Lista o produto que tem o name enviado por paramentro
-productsRouter.get('/filterList', (req, res) => {
+productsRouter.get('/filterList',  async (req, res) => {
     try{
-        const {name} = req.body;
         
         const productRepository = getCustomRepository(ProductRepository);
-        const productService = new CreateProductService(productRepository)
+        const productService = new CreateProductService(productRepository);
         
-        const product = productService.filterList(name);
+        const product = await productService.filterList(req.body.id);
         
 
         return res.json(product)
@@ -59,12 +58,39 @@ productsRouter.get('/filterList', (req, res) => {
     }
 });
 
+//Deleta um produto da lista
+productsRouter.delete('/',  async (req, res) => {
+    try{
+        
+        const productRepository = getCustomRepository(ProductRepository);
+        const productService = new CreateProductService(productRepository);
+        
+        const product = await productService.delete(req.body.id);
+        
+
+        return res.json(product);
+    } catch (err){
+        return res.status(400).json({error: err.message});
+    }
+});
 
 
-// //Atualiza as informações de um produto
-// productsRouter.put('/products/:id', update);
+//Edita um produto
+productsRouter.put('/',async (req, res) => {
+    try{
 
-// //Atualiza as informações de um produto
-// productsRouter.delete('/products/:id', destroy);
+        const {id, name, description, value} = req.body;
+
+        const productRepository = getCustomRepository(ProductRepository);
+        const productService = new CreateProductService(productRepository);
+        
+        const product = await productService.update(id, {name, description,value});
+ 
+        return res.json(product);
+        
+    }catch (err){
+        return res.status(400).json({error: err.message});
+    }
+});
 
 export default productsRouter;
