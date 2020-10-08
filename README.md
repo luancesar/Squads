@@ -5,23 +5,23 @@ Olá, esse repositório contém uma API REST em NodeJs e Typescript.
 
 # REQUISIÇÕES
 
-  GET /products
+  GET http://localhost:3001/products
   - Lista todos os produtos cadastrados
   
 
-  GET /products/filterList (body - {id:string})
+  GET http://localhost:3001/products/filterList (body - {id:string})
   - Lista o produto que corresponde ao id enviado
   
 
-  POST /products (body - {name:string, description?:string, value:string})
+  POST http://localhost:3001/products (body - {name:string, description?:string, value:string})
   - Cria um novo produto
   
 
-  DELETE /products (body - {id:string})
+  DELETE http://localhost:3001/products (body - {id:string})
   - Deleta o produto que corresponde ao id enviado
   
 
-  PUT /products (body - {id:string, name:string, description?:string, value:string})
+  PUT http://localhost:3001/products (body - {id:string, name:string, description?:string, value:string})
   - Atualiza o name, description e value do produto que corresponde ao id enviado 
   
 
