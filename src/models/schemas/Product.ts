@@ -18,6 +18,3 @@ class Product{
 };
 
 export default Product
-
-
-// import mongoose from 'mongoose';
